@@ -231,7 +231,7 @@ Podés seguir este `traceId` en los logs de todos los servicios para rastrear cu
 
 ---
 
-¡Listo para producción o entrevistas técnicas! 😉
+
 
 
 ---
