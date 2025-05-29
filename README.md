@@ -1,4 +1,3 @@
-
 # 💸 Proyecto ATM – Cajero Automático en Java
 
 Este proyecto simula un **sistema real de cajero automático**, implementado como **una arquitectura de microservicios + cliente CLI**. Permite realizar operaciones como login, consulta de saldo, depósito y extracción, **desde línea de comandos**, consumiendo microservicios REST construidos con Spring Boot.
@@ -17,28 +16,31 @@ console-app ← REST → gateway-service → [auth, account, transaction]
     CLI moderno (Picocli)
 ```
 
-- `auth-service`: valida tarjetas.
-- `account-service`: gestiona saldos, depósitos y extracciones.
-- `transaction-service`: registra auditorías.
-- `gateway-service`: unifica accesos.
-- `atm-commons`: modelos y DTOs reutilizables.
-- `console-app`: cliente de consola que simula el uso de un cajero real.
+* `auth-service`: valida tarjetas.
+* `account-service`: gestiona saldos, depósitos y extracciones.
+* `transaction-service`: registra auditorías.
+* `gateway-service`: unifica accesos.
+* `atm-commons`: modelos y DTOs reutilizables.
+* `console-app`: cliente de consola que simula el uso de un cajero real.
 
 ---
 
 ## 🚀 Ejecución
 
 ### Requisitos
-- JDK 11+
-- Maven 3.8+
-- (Opcional) Docker si se implementa containerización más adelante
+
+* JDK 11+
+* Maven 3.8+
+* (Opcional) Docker si se implementa containerización más adelante
 
 ### Compilar
+
 ```bash
 mvn clean package
 ```
 
 ### Ejecutar CLI
+
 ```bash
 # Login
 java -jar console-app/target/console-app.jar login --dni 12345678
@@ -58,7 +60,7 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 ## 📦 Tecnologías utilizadas
 
 | Módulo         | Tecnología principal     | Propósito                        |
-|----------------|--------------------------|----------------------------------|
+| -------------- | ------------------------ | -------------------------------- |
 | CLI (console)  | `picocli`, `Spring Boot` | Cliente con comandos             |
 | Microservicios | `Spring Boot`, `H2`      | REST APIs y DB en memoria        |
 | Commons        | Java puro                | DTOs compartidos entre servicios |
@@ -71,22 +73,22 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 
 ### ✔️ Se implementó
 
-- Separación en microservicios reales (no simulados).
-- DTOs y modelos unificados en `atm-commons`.
-- CLI profesional por comandos y flags.
-- Logging estructurado con SLF4J.
-- Modo fallback interactivo si no se pasan argumentos CLI.
-- Validación de entrada básica.
-- Persistencia temporal en memoria con H2.
-- Separación por capas (controller, service, model, dto).
-- Código desacoplado, listo para testear y escalar.
+* Separación en microservicios reales (no simulados).
+* DTOs y modelos unificados en `atm-commons`.
+* CLI profesional por comandos y flags.
+* Logging estructurado con SLF4J.
+* Modo fallback interactivo si no se pasan argumentos CLI.
+* Validación de entrada básica.
+* Persistencia temporal en memoria con H2.
+* Separación por capas (controller, service, model, dto).
+* Código desacoplado, listo para testear y escalar.
 
 ---
 
 ## ⏱️ Tiempo estimado de desarrollo
 
-| Tarea                          | Tiempo estimado |
-|-------------------------------|-----------------|
+| Tarea                         | Tiempo estimado |
+| ----------------------------- | --------------- |
 | Análisis y diseño             | 1 h             |
 | Implementación microservicios | 5 h             |
 | Desarrollo CLI (Picocli)      | 2 h             |
@@ -99,6 +101,7 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 ## ❌ Mejoras pendientes (por falta de tiempo)
 
 ### 🔐 1. Autenticación y autorización
+
 **Qué faltó:** Seguridad robusta (JWT, OAuth2, MFA)
 
 **Por qué es importante:** En producción, no se puede operar sólo con DNI o número de tarjeta. Debe haber validación real de identidad (PIN, clave, factor).
@@ -106,6 +109,7 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 **Beneficio:** Prevención de fraudes, control de sesiones, seguridad a nivel endpoint.
 
 ### 🧪 2. Pruebas automatizadas (Unit + Integration)
+
 **Qué faltó:** Test unitarios con `JUnit + Mockito`, test de integración con `TestContainers`.
 
 **Beneficio:** Reduce riesgo de regresiones, mejora confianza al modificar lógica.
@@ -113,31 +117,35 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 **Estrategia futura:** Mockear servicios externos, validar flujo end-to-end con `@SpringBootTest`.
 
 ### 🐳 3. Dockerización
+
 **Qué faltó:** Dockerfiles por microservicio y `docker-compose.yml`.
 
 **Beneficio:** Facilita testing, despliegue y onboarding. Aísla el entorno.
 
-### 📊 4. Observabilidad y trazabilidad
-**Qué faltó:** Logs con contexto (ID de transacción), trazabilidad con MDC o correlación de logs, métricas de salud (`/actuator`, Prometheus).
+~~### 📊 4. Observabilidad y trazabilidad~~
+~~**Qué faltó:** Logs con contexto (ID de transacción), trazabilidad con MDC o correlación de logs, métricas de salud (`/actuator`, Prometheus).~~
 
-**Beneficio:** Auditoría completa, seguimiento de errores, monitoreo.
+~~**Beneficio:** Auditoría completa, seguimiento de errores, monitoreo.~~
 
 ### ♻️ 5. Manejo global de errores
+
 **Qué faltó:** `@ControllerAdvice` para respuestas limpias tipo `404`, `400`, `403`.
 
 **Beneficio:** Mejora la experiencia del dev y del cliente, evita respuestas crudas o errores 500 innecesarios.
 
 ### 🛠️ 6. CI/CD
+
 **Qué faltó:** Pipelines con GitHub Actions o GitLab CI
 
 **Beneficio:** Validaciones automáticas antes de cada deploy, menos bugs en producción.
 
-### 🔁 7. Retry, circuit breaker y fallback
-**Qué faltó:** Uso de Resilience4J para reintentos automáticos si un servicio falla.
+~~### 🔁 7. Retry, circuit breaker y fallback~~
+~~**Qué faltó:** Uso de Resilience4J para reintentos automáticos si un servicio falla.~~
 
-**Beneficio:** Resiliencia en ambientes distribuidos.
+~~**Beneficio:** Resiliencia en ambientes distribuidos.~~
 
 ### 🔄 8. Encriptación y cumplimiento
+
 **Qué faltó:** Encriptar CBU, tarjetas y logs sensibles con AES o TLS.
 
 **Beneficio:** Cumple con normativas (ej: PCI-DSS), previene filtraciones.
@@ -146,16 +154,16 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 
 ## 🧠 Lecciones y decisiones clave
 
-- El foco fue cumplir todos los requerimientos funcionales con una arquitectura real y profesional.
-- Se priorizó claridad, extensibilidad y separación de responsabilidades por sobre la cobertura exhaustiva de features.
-- El proyecto está **listo para ser ampliado con seguridad, docker, test, y resiliencia sin grandes refactors.**
+* El foco fue cumplir todos los requerimientos funcionales con una arquitectura real y profesional.
+* Se priorizó claridad, extensibilidad y separación de responsabilidades por sobre la cobertura exhaustiva de features.
+* El proyecto está **listo para ser ampliado con seguridad, docker, test, y resiliencia sin grandes refactors.**
 
 ---
 
 ## ✍️ Autor
 
-Joel Vallejos – 2025  
-📧 joelgvallejos982001@gmail.com
+Joel Vallejos – 2025
+📧 [joelgvallejos982001@gmail.com](mailto:joelgvallejos982001@gmail.com)
 
 ---
 
@@ -163,7 +171,6 @@ Joel Vallejos – 2025
 
 👉 [https://github.com/tu-usuario/challenge-atm](https://github.com/tu-usuario/challenge-atm)
 
----
  
 # 🧾 Proyecto ATM - Trazabilidad con Trace ID
 
