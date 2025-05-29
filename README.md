@@ -122,29 +122,21 @@ java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 100
 
 **Beneficio:** Facilita testing, despliegue y onboarding. Aísla el entorno.
 
-~~### 📊 4. Observabilidad y trazabilidad~~
-~~**Qué faltó:** Logs con contexto (ID de transacción), trazabilidad con MDC o correlación de logs, métricas de salud (`/actuator`, Prometheus).~~
 
-~~**Beneficio:** Auditoría completa, seguimiento de errores, monitoreo.~~
-
-### ♻️ 5. Manejo global de errores
+### ♻️ 4. Manejo global de errores
 
 **Qué faltó:** `@ControllerAdvice` para respuestas limpias tipo `404`, `400`, `403`.
 
 **Beneficio:** Mejora la experiencia del dev y del cliente, evita respuestas crudas o errores 500 innecesarios.
 
-### 🛠️ 6. CI/CD
+### 🛠️ 5. CI/CD
 
 **Qué faltó:** Pipelines con GitHub Actions o GitLab CI
 
 **Beneficio:** Validaciones automáticas antes de cada deploy, menos bugs en producción.
 
-~~### 🔁 7. Retry, circuit breaker y fallback~~
-~~**Qué faltó:** Uso de Resilience4J para reintentos automáticos si un servicio falla.~~
 
-~~**Beneficio:** Resiliencia en ambientes distribuidos.~~
-
-### 🔄 8. Encriptación y cumplimiento
+### 🔄 6. Encriptación y cumplimiento
 
 **Qué faltó:** Encriptar CBU, tarjetas y logs sensibles con AES o TLS.
 
