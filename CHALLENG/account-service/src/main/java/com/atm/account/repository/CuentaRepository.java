@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CuentaRepository extends CrudRepository<CuentaEntity, String> {
-    // Métodos custom si querés
+
 }
