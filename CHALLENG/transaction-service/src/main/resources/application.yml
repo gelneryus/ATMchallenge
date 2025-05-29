@@ -11,3 +11,32 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  retry:
+    instances:
+      transactionService:
+        maxAttempts: 3
+        waitDuration: 1s
+
+  circuitbreaker:
+    instances:
+      transactionService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [%X{traceId}] %msg%n"
