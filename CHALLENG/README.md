@@ -41,10 +41,9 @@ java -jar target/console-app-1.0.0.jar <comando>
 ## 🧪 Ejemplos de uso
 
 ```bash
-java -jar console-app.jar login 12345678
-java -jar console-app.jar extraer 12345678 1001 200
-java -jar console-app.jar depositar 12345678 3020000010000000000001 500
-java -jar console-app.jar saldo 12345678 1001
+java -jar console-app.jar --login --dni 12345678 --pin 1234
+java -jar console-app.jar --extraer --monto 200 --cuenta 1001
+
 ```
 
 ---
