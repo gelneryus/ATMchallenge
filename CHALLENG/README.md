@@ -231,8 +231,6 @@ Podés seguir este `traceId` en los logs de todos los servicios para rastrear cu
 
 ---
 
-¡Listo para producción o entrevistas técnicas! 😉
-
 
 ---
 ![image](https://github.com/user-attachments/assets/e64097a9-8f11-4c06-9d6c-cc73e3c0b0b6)
