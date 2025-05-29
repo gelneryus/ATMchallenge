@@ -39,6 +39,32 @@ console-app ← REST → gateway-service → [auth, account, transaction]
 mvn clean package
 ```
 
+
+## 🧪 ¿Cómo ejecutar la aplicación por consola?
+
+### ✅ Opción 1: Desde IntelliJ
+
+1. Ir al módulo `console-app`
+2. Abrir la clase `CliApp` y correr el `main()` una vez
+3. Ir a `Run > Edit Configurations...`
+4. En el campo **Program arguments**, escribir alguno de los siguientes comandos:
+
+```bash
+# Login
+login --tarjeta 1234567890123456
+
+# Consultar saldo
+saldo --tarjeta 1234567890123456 --cuenta 001
+
+# Depositar
+depositar --tarjeta 1234567890123456 --cuenta 002 --monto 1000
+
+# Extraer
+extraer --tarjeta 1234567890123456 --cuenta 001 --monto 500
+
+
+
+
 ### Ejecutar CLI
 
 ```bash
