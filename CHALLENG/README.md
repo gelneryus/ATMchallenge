@@ -99,12 +99,7 @@ java -jar console-app.jar saldo 12345678 1001
 
 ---
 
-## ⏱ Tiempo estimado de desarrollo
-
-Aproximadamente **X horas** entre análisis, implementación, testing y documentación.
-
----
-![image](https://github.com/user-attachments/assets/602b2958-a686-4d6b-88e9-36b947e7041d)
+![image](https://github.com/user-attachments/assets/e64097a9-8f11-4c06-9d6c-cc73e3c0b0b6)
 
 ## 🔗 Repositorio público
 
