@@ -41,7 +41,7 @@ mvn clean package
 
 
 ## 🧪 ¿Cómo ejecutar la aplicación por consola?
-
+Si usás la consola integrada de IntelliJ (View > Tool Windows > Terminal), podés correr el jar directamente como si fuera en una terminal real.
 ### ✅ Opción 1: Desde IntelliJ
 
 1. Ir al módulo `console-app`
