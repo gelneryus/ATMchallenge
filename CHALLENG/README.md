@@ -44,6 +44,9 @@ mvn clean package
 
 ### ✅ Opción 1: Desde IntelliJ
 
+Si usás la consola integrada de IntelliJ (View > Tool Windows > Terminal), podés correr el jar directamente como si fuera en una terminal real.
+
+
 1. Ir al módulo `console-app`
 2. Abrir la clase `CliApp` y correr el `main()` una vez
 3. Ir a `Run > Edit Configurations...`
