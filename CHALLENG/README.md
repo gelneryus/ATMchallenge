@@ -104,6 +104,7 @@ java -jar console-app.jar saldo 12345678 1001
 Aproximadamente **X horas** entre análisis, implementación, testing y documentación.
 
 ---
+![image](https://github.com/user-attachments/assets/602b2958-a686-4d6b-88e9-36b947e7041d)
 
 ## 🔗 Repositorio público
 
