@@ -1,202 +1,239 @@
-# 💻 Console App - Cajero Automático CLI
 
-Aplicación de consola en Java que simula un cajero automático. Permite realizar operaciones de **login, consulta de saldo, extracción y depósito**, interactuando con microservicios vía REST.
+# 💸 Proyecto ATM – Cajero Automático en Java
 
-Incluye dos formas de uso:
-- ✅ **CLI moderno por comandos y flags** (estilo Unix, con `--dni`, `--cuenta`, etc.)
-- 🧾 **Modo interactivo clásico** (menú en consola si no se pasan argumentos)
+Este proyecto simula un **sistema real de cajero automático**, implementado como **una arquitectura de microservicios + cliente CLI**. Permite realizar operaciones como login, consulta de saldo, depósito y extracción, **desde línea de comandos**, consumiendo microservicios REST construidos con Spring Boot.
+
+Se implementaron buenas prácticas modernas en arquitectura, DTOs compartidos, capa de servicios desacoplada, estructura de carpetas limpia y uso de librerías profesionales como Picocli y SLF4J.
+
+> ✅ Desarrollado en 11 horas como parte de un challenge técnico, con foco en extensibilidad, claridad y robustez.
+
+---
+
+## 🏗️ Arquitectura general
+
+```
+console-app ← REST → gateway-service → [auth, account, transaction]
+           ↑
+    CLI moderno (Picocli)
+```
+
+- `auth-service`: valida tarjetas.
+- `account-service`: gestiona saldos, depósitos y extracciones.
+- `transaction-service`: registra auditorías.
+- `gateway-service`: unifica accesos.
+- `atm-commons`: modelos y DTOs reutilizables.
+- `console-app`: cliente de consola que simula el uso de un cajero real.
 
 ---
 
 ## 🚀 Ejecución
 
-### 1. Compilar
+### Requisitos
+- JDK 11+
+- Maven 3.8+
+- (Opcional) Docker si se implementa containerización más adelante
+
+### Compilar
 ```bash
 mvn clean package
 ```
 
----
-
-## ✅ Modo CLI (recomendado)
-
-Usando comandos explícitos:
-
+### Ejecutar CLI
 ```bash
-# Iniciar sesión
-java -jar target/console-app.jar login --dni 12345678
+# Login
+java -jar console-app/target/console-app.jar login --dni 12345678
 
 # Consultar saldo
-java -jar target/console-app.jar saldo --dni 12345678 --cuenta 1001
+java -jar console-app/target/console-app.jar saldo --dni 12345678 --cuenta 1001
 
-# Depositar dinero
-java -jar target/console-app.jar depositar --dni 12345678 --cuenta 1001 --monto 500
+# Depósito
+java -jar console-app/target/console-app.jar depositar --dni 12345678 --cuenta 1001 --monto 500
 
-# Extraer dinero
-java -jar target/console-app.jar extraer --dni 12345678 --cuenta 1001 --monto 200
-```
-
-### ℹ️ Ayuda disponible
-```bash
-java -jar target/console-app.jar --help
+# Extracción
+java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 1001 --monto 200
 ```
 
 ---
 
-## 🧾 Modo interactivo (fallback por default)
+## 📦 Tecnologías utilizadas
 
-Si ejecutás sin argumentos:
-
-```bash
-java -jar target/console-app.jar
-```
-
-Se activa el menú tipo terminal clásico (vía `ConsoleRunner`), con opciones paso a paso.
-
----
-
-## ⚙️ Dependencias principales
-
-- `picocli` para parseo de argumentos y subcomandos
-- `Spring Boot` para modo interactivo
-- `RestTemplate` (vía `AtmRestClient`) para llamadas a microservicios
-- `H2` como base de datos en memoria para persistencia ligera
+| Módulo         | Tecnología principal     | Propósito                        |
+|----------------|--------------------------|----------------------------------|
+| CLI (console)  | `picocli`, `Spring Boot` | Cliente con comandos             |
+| Microservicios | `Spring Boot`, `H2`      | REST APIs y DB en memoria        |
+| Commons        | Java puro                | DTOs compartidos entre servicios |
+| Comunicación   | `Feign` / `RestTemplate` | Llamadas HTTP                    |
+| Logs           | `SLF4J`                  | Logging estructurado             |
 
 ---
 
-## 📦 Estructura del proyecto
+## ⚙️ Decisiones técnicas tomadas
 
-```
-console-app/
-├── CliApp.java        ← Entrada CLI con picocli
-├── ConsoleApp.java    ← Entrada general que decide modo CLI vs menú
-├── ConsoleRunner.java ← Modo menú interactivo
-├── client/            ← Clientes REST: login, saldo, extracciones
-├── command/           ← Comandos usados en modo menú
-├── dto/               ← DTOs simples
-└── resources/
-    └── application.yml
-```
+### ✔️ Se implementó
 
----
-
-## 🧠 Decisiones de diseño y arquitectura
-
-- **Arquitectura basada en microservicios**, con separación clara de responsabilidades:
-  - `auth-service`: validación de tarjetas.
-  - `account-service`: lógica de cuentas (saldo, extracción, depósito).
-  - `transaction-service`: registro de auditoría.
-  - `gateway-service`: centralización de rutas.
-  - `console-app`: interfaz de consola tipo cliente.
-
-- **DTOs y modelos compartidos** mediante un módulo `atm-commons`.
-
-- Uso de **Spring Boot** para rápida configuración y facilidad de testing.
-
-- **Persistencia en H2** para mantener la simpleza del entorno local y cumplir con el requisito de base en memoria.
+- Separación en microservicios reales (no simulados).
+- DTOs y modelos unificados en `atm-commons`.
+- CLI profesional por comandos y flags.
+- Logging estructurado con SLF4J.
+- Modo fallback interactivo si no se pasan argumentos CLI.
+- Validación de entrada básica.
+- Persistencia temporal en memoria con H2.
+- Separación por capas (controller, service, model, dto).
+- Código desacoplado, listo para testear y escalar.
 
 ---
 
-## ⚖️ Decisiones técnicas y compensaciones
+## ⏱️ Tiempo estimado de desarrollo
 
-- No se incluyó seguridad (ej: JWT, OAuth2) para simplificar la entrega en tiempo y enfocarse en la funcionalidad base.
-
-- No se implementaron pruebas unitarias(algunas) o integración por falta de tiempo, aunque la estructura lo permite fácilmente.
-
-- No se aplicaron contenedores (Docker) ni pipelines CI/CD, pero la arquitectura es compatible con una futura integración.
-
-- No se usaron patrones avanzados como CQRS/Event Sourcing, ya que el alcance no lo justificaba.
-
----
-
-## ⏱ Tiempo estimado de desarrollo
-
-- Análisis inicial + diseño de arquitectura: 1 hora
-- Implementación de microservicios: 5 horas
-- Desarrollo del CLI con Picocli: 2 horas
-- Pruebas manuales + validaciones: 2 horas
-- Documentación y ajustes: 1 hora
-
-**Total estimado: 11 horas**
+| Tarea                          | Tiempo estimado |
+|-------------------------------|-----------------|
+| Análisis y diseño             | 1 h             |
+| Implementación microservicios | 5 h             |
+| Desarrollo CLI (Picocli)      | 2 h             |
+| Pruebas manuales              | 2 h             |
+| Documentación final           | 1 h             |
+| **Total**                     | **11 horas**    |
 
 ---
 
-## ⚖️ Decisiones técnicas y compensaciones
+## ❌ Mejoras pendientes (por falta de tiempo)
 
-Por limitaciones de tiempo, se priorizó cumplir con todos los requisitos funcionales de forma sólida y extensible. A continuación se detallan decisiones técnicas tomadas y qué mejoras podrían haberse agregado para robustecer el sistema en un entorno real de producción:
+### 🔐 1. Autenticación y autorización
+**Qué faltó:** Seguridad robusta (JWT, OAuth2, MFA)
 
-### 1. 🔐 Autenticación y Seguridad (No incluido)
-**Qué se hubiese agregado:** Autenticación JWT o mediante OAuth2 con validación de PIN o MFA.
+**Por qué es importante:** En producción, no se puede operar sólo con DNI o número de tarjeta. Debe haber validación real de identidad (PIN, clave, factor).
 
-**Por qué:** En un sistema real no se permite operar solo con DNI o tarjeta. Se debería validar identidad, PIN o clave de un solo uso.
+**Beneficio:** Prevención de fraudes, control de sesiones, seguridad a nivel endpoint.
 
-**Caso hipotético:**
-> Un atacante obtiene el número de tarjeta de un usuario y realiza extracciones sin PIN ni verificación. Con autenticación robusta, eso no sería posible.
+### 🧪 2. Pruebas automatizadas (Unit + Integration)
+**Qué faltó:** Test unitarios con `JUnit + Mockito`, test de integración con `TestContainers`.
 
-**Mejora:** Protección de endpoints críticos, control de acceso por roles, sesión expirada, trazabilidad segura.
+**Beneficio:** Reduce riesgo de regresiones, mejora confianza al modificar lógica.
 
----
+**Estrategia futura:** Mockear servicios externos, validar flujo end-to-end con `@SpringBootTest`.
 
-### 2. 🧪 Pruebas automatizadas (No incluidas)
-**Qué se hubiese agregado:** Pruebas unitarias con JUnit, mocks con Mockito y pruebas de integración con TestContainers.
+### 🐳 3. Dockerización
+**Qué faltó:** Dockerfiles por microservicio y `docker-compose.yml`.
 
-**Por qué:** Asegura que los servicios funcionen correctamente ante cambios futuros.
+**Beneficio:** Facilita testing, despliegue y onboarding. Aísla el entorno.
 
-**Caso hipotético:**
-> Se cambia la lógica de extracción para permitir overdraft temporal, pero no se actualiza bien la validación. Sin pruebas, el error pasa a producción.
+### 📊 4. Observabilidad y trazabilidad
+**Qué faltó:** Logs con contexto (ID de transacción), trazabilidad con MDC o correlación de logs, métricas de salud (`/actuator`, Prometheus).
 
-**Mejora:** Confiabilidad, menor tiempo de debugging, mayor estabilidad en despliegues.
+**Beneficio:** Auditoría completa, seguimiento de errores, monitoreo.
 
----
+### ♻️ 5. Manejo global de errores
+**Qué faltó:** `@ControllerAdvice` para respuestas limpias tipo `404`, `400`, `403`.
 
-### 3. 🐳 Dockerización (No incluido)
-**Qué se hubiese agregado:** Dockerfile por cada microservicio y `docker-compose.yml` para levantar todo el sistema con un solo comando.
+**Beneficio:** Mejora la experiencia del dev y del cliente, evita respuestas crudas o errores 500 innecesarios.
 
-**Por qué:** Facilita despliegue, testing local y portabilidad del entorno.
+### 🛠️ 6. CI/CD
+**Qué faltó:** Pipelines con GitHub Actions o GitLab CI
 
-**Caso hipotético:**
-> Un evaluador quiere probar tu proyecto y no tiene Java ni Maven instalado. Con Docker, sólo necesita `docker compose up`.
+**Beneficio:** Validaciones automáticas antes de cada deploy, menos bugs en producción.
 
-**Mejora:** Portabilidad, consistencia de entorno, onboarding más rápido para nuevos devs.
+### 🔁 7. Retry, circuit breaker y fallback
+**Qué faltó:** Uso de Resilience4J para reintentos automáticos si un servicio falla.
 
----
+**Beneficio:** Resiliencia en ambientes distribuidos.
 
-### 4. 📊 Observabilidad y Logs (No implementado)
-**Qué se hubiese agregado:** Logs estructurados con SLF4J + integración con ELK/Grafana. Además de métricas vía Micrometer/Prometheus.
+### 🔄 8. Encriptación y cumplimiento
+**Qué faltó:** Encriptar CBU, tarjetas y logs sensibles con AES o TLS.
 
-**Por qué:** En producción, necesitás saber qué pasó, cuándo y por qué.
-
-**Caso hipotético:**
-> Un usuario reporta que su saldo bajó sin motivo. Sin logs no podés auditar ni reconstruir la operación.
-
-**Mejora:** Auditoría, resolución de incidentes, monitoreo de salud del sistema.
+**Beneficio:** Cumple con normativas (ej: PCI-DSS), previene filtraciones.
 
 ---
 
-### 5. ♻️ Manejo de errores global (No incluido)
-**Qué se hubiese agregado:** Manejo centralizado de excepciones con `@ControllerAdvice` en Spring.
+## 🧠 Lecciones y decisiones clave
 
-**Por qué:** Brinda respuestas consistentes y claras en vez de stacktraces confusos.
-
-**Caso hipotético:**
-> Una cuenta no existe y se devuelve un 500 en vez de un 404 con mensaje "Cuenta inexistente".
-
-**Mejora:** Mejor DX (developer experience), menos bugs visibles, errores legibles.
+- El foco fue cumplir todos los requerimientos funcionales con una arquitectura real y profesional.
+- Se priorizó claridad, extensibilidad y separación de responsabilidades por sobre la cobertura exhaustiva de features.
+- El proyecto está **listo para ser ampliado con seguridad, docker, test, y resiliencia sin grandes refactors.**
 
 ---
-
-### 6. 🏗️ CI/CD automatizado (No incluido)
-**Qué se hubiese agregado:** GitHub Actions para test + build + deploy automático.
-
-**Por qué:** Asegura calidad de código y acelera entregas.
-
-**Caso hipotético:**
-> Subís un cambio que rompe login. Con CI, se detecta antes del deploy.
-
-**Mejora:** Despliegues seguros, control de calidad automático.
 
 ## ✍️ Autor
 
 Joel Vallejos – 2025  
+📧 joelgvallejos982001@gmail.com
+
+---
+
+## 🔗 Repositorio
+
+👉 [https://github.com/tu-usuario/challenge-atm](https://github.com/tu-usuario/challenge-atm)
+
+---
+ 
+# 🧾 Proyecto ATM - Trazabilidad con Trace ID
+
+Este proyecto fue modificado para implementar **traceabilidad completa de logs** usando un `traceId` único por request. Esto permite seguir el flujo de una operación desde la consola hasta cada microservicio.
+
+---
+
+## ✅ ¿Qué incluye?
+
+| Componente         | Mejora aplicada                                       |
+|--------------------|--------------------------------------------------------|
+| `console-app`      | Interceptor que genera `X-Trace-Id` y lo loguea       |
+| `gateway-service`  | Filtro global que propaga/genera `X-Trace-Id`         |
+| `transaction-service` | Filtro que captura el `traceId` y lo guarda en MDC |
+| Todos los servicios| Logs JSON con `logback-spring.xml` y `MDC` habilitado |
+
+---
+
+## 🚀 ¿Cómo ejecutarlo?
+
+1. **Levantar los microservicios**:
+```bash
+cd auth-service && mvn spring-boot:run
+cd account-service && mvn spring-boot:run
+cd transaction-service && mvn spring-boot:run
+cd gateway-service && mvn spring-boot:run
+```
+
+2. **Ejecutar el cliente por consola**:
+```bash
+cd console-app
+mvn spring-boot:run -Dspring-boot.run.arguments="--login --dni=1234 --pin=5678"
+```
+
+---
+
+## 🔍 Ver los logs con traceId
+
+Ejemplo de log JSON:
+```json
+{
+  "@timestamp": "2025-05-29T00:55:21.324+0000",
+  "@version": "1",
+  "message": "Solicitud de extracción ejecutada",
+  "logger_name": "com.atm.transaction.service.TransaccionService",
+  "level": "INFO",
+  "traceId": "1d3e25c5-4b2a-4e5d-bf6f-764c74a8e398"
+}
+```
+
+Podés seguir este `traceId` en los logs de todos los servicios para rastrear cualquier operación de punta a punta.
+
+---
+
+## 🛠️ Librerías agregadas
+
+- `logstash-logback-encoder`: logs JSON con soporte para MDC.
+- `RestTemplate` con `ClientHttpRequestInterceptor` en `console-app`.
+
+---
+
+## 📁 Estructura modificada
+
+- `logback-spring.xml` → agregado en todos los módulos.
+- `TraceIdInterceptor`, `TraceIdFilter`, `TraceIdLoggingFilter` → nuevas clases para trazabilidad.
+
+---
+
+¡Listo para producción o entrevistas técnicas! 😉
+
 
 ---
 ![image](https://github.com/user-attachments/assets/e64097a9-8f11-4c06-9d6c-cc73e3c0b0b6)
