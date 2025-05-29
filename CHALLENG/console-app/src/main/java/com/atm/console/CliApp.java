@@ -21,20 +21,20 @@ public class CliApp implements Runnable {
         System.out.println("ATM CLI - Usa '--help' para ver comandos disponibles.");
     }
 
-    @Command(name = "login", description = "Iniciar sesión con DNI")
+    @Command(name = "login", description = "Iniciar sesión con número de tarjeta")
     static class Login implements Runnable {
 
-        @Option(names = "--dni", required = true, description = "DNI del titular")
-        String dni;
+        @Option(names = "--tarjeta", required = true, description = "Número de tarjeta del titular")
+        String tarjeta;
 
         @Override
         public void run() {
             AtmRestClient client = new AtmRestClient();
             try {
-                String response = client.login(dni);
-                System.out.println("✔ Login exitoso: " + response);
+                String response = client.login(tarjeta);
+                System.out.println("✔ Ingreso exitoso: " + response);
             } catch (Exception e) {
-                System.err.println("❌ Error en login: " + e.getMessage());
+                System.err.println("❌ Ingreso no exitoso: " + e.getMessage());
             }
         }
     }
@@ -42,18 +42,18 @@ public class CliApp implements Runnable {
     @Command(name = "saldo", description = "Consultar saldo de cuenta")
     static class Saldo implements Runnable {
 
-        @Option(names = "--dni", required = true)
-        String dni;
+        @Option(names = "--tarjeta", required = true, description = "Número de tarjeta")
+        String tarjeta;
 
-        @Option(names = "--cuenta", required = true)
+        @Option(names = "--cuenta", required = true, description = "Número de cuenta")
         String cuenta;
 
         @Override
         public void run() {
             AtmRestClient client = new AtmRestClient();
             try {
-                String response = client.consultarSaldo(dni, cuenta);
-                System.out.println("💰 Saldo: " + response);
+                String response = client.consultarSaldo(tarjeta, cuenta);
+                System.out.println("💰 Su saldo es: " + response);
             } catch (Exception e) {
                 System.err.println("❌ Error al consultar saldo: " + e.getMessage());
             }
@@ -63,20 +63,20 @@ public class CliApp implements Runnable {
     @Command(name = "depositar", description = "Depositar dinero en una cuenta")
     static class Depositar implements Runnable {
 
-        @Option(names = "--dni", required = true)
-        String dni;
+        @Option(names = "--tarjeta", required = true, description = "Número de tarjeta")
+        String tarjeta;
 
-        @Option(names = "--cuenta", required = true)
+        @Option(names = "--cuenta", required = true, description = "Cuenta destino (CBU)")
         String cuenta;
 
-        @Option(names = "--monto", required = true)
+        @Option(names = "--monto", required = true, description = "Monto a depositar")
         BigDecimal monto;
 
         @Override
         public void run() {
             AtmRestClient client = new AtmRestClient();
             try {
-                String response = client.depositar(dni, cuenta, monto);
+                String response = client.depositar(tarjeta, cuenta, monto);
                 System.out.println("✅ Depósito exitoso: " + response);
             } catch (Exception e) {
                 System.err.println("❌ Error al depositar: " + e.getMessage());
@@ -87,23 +87,23 @@ public class CliApp implements Runnable {
     @Command(name = "extraer", description = "Extraer dinero de una cuenta")
     static class Extraer implements Runnable {
 
-        @Option(names = "--dni", required = true)
-        String dni;
+        @Option(names = "--tarjeta", required = true, description = "Número de tarjeta")
+        String tarjeta;
 
-        @Option(names = "--cuenta", required = true)
+        @Option(names = "--cuenta", required = true, description = "Cuenta origen")
         String cuenta;
 
-        @Option(names = "--monto", required = true)
+        @Option(names = "--monto", required = true, description = "Monto a extraer")
         BigDecimal monto;
 
         @Override
         public void run() {
             AtmRestClient client = new AtmRestClient();
             try {
-                String response = client.extraer(dni, cuenta, monto);
-                System.out.println("✅ Extracción exitosa: " + response);
+                String response = client.extraer(tarjeta, cuenta, monto);
+                System.out.println("✅ Retire su dinero: " + response);
             } catch (Exception e) {
-                System.err.println("❌ Error al extraer: " + e.getMessage());
+                System.err.println("❌ Error en la extracción: " + e.getMessage());
             }
         }
     }
