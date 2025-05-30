@@ -83,21 +83,6 @@ java -jar console-app/target/console-app.jar depositar --dni 12345678 --cuenta 1
 # Extracción
 java -jar console-app/target/console-app.jar extraer --dni 12345678 --cuenta 1001 --monto 200
 ```
-### ✅ Modo 2: CLI Interactivo (Scanner)
-
-Ideal para simular un flujo de usuario real, con menú paso a paso.
-
-- Ejecutar la clase `ScannerApp`
-- Mostrará un menú como este:
-
-```
-1. Login
-2. Consultar saldo
-3. Depositar
-4. Extraer
-5. Salir
-```
----
 
 ## 📦 Tecnologías utilizadas
 
