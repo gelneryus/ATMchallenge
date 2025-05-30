@@ -1,6 +1,7 @@
 package com.atm.console;
 
 import com.atm.console.client.AtmRestClient;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 
@@ -29,7 +30,7 @@ public class CliApp implements Runnable {
 
         @Override
         public void run() {
-            AtmRestClient client = new AtmRestClient();
+            AtmRestClient client = getClient();
             try {
                 String response = client.login(tarjeta);
                 System.out.println("✔ Ingreso exitoso: " + response);
@@ -50,7 +51,7 @@ public class CliApp implements Runnable {
 
         @Override
         public void run() {
-            AtmRestClient client = new AtmRestClient();
+            AtmRestClient client = getClient();
             try {
                 String response = client.consultarSaldo(tarjeta, cuenta);
                 System.out.println("💰 Su saldo es: " + response);
@@ -74,7 +75,7 @@ public class CliApp implements Runnable {
 
         @Override
         public void run() {
-            AtmRestClient client = new AtmRestClient();
+            AtmRestClient client = getClient();
             try {
                 String response = client.depositar(tarjeta, cuenta, monto);
                 System.out.println("✅ Depósito exitoso: " + response);
@@ -98,7 +99,7 @@ public class CliApp implements Runnable {
 
         @Override
         public void run() {
-            AtmRestClient client = new AtmRestClient();
+            AtmRestClient client = getClient();
             try {
                 String response = client.extraer(tarjeta, cuenta, monto);
                 System.out.println("✅ Retire su dinero: " + response);
@@ -110,5 +111,10 @@ public class CliApp implements Runnable {
 
     public static void main(String[] args) {
         new CommandLine(new CliApp()).execute(args);
+    }
+
+    private static AtmRestClient getClient() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("com.atm.console");
+        return context.getBean(AtmRestClient.class);
     }
 }

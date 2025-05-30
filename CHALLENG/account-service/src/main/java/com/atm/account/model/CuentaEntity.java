@@ -6,8 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 public class CuentaEntity {
     @Id
@@ -15,9 +14,27 @@ public class CuentaEntity {
     private String cbu;
     private BigDecimal saldo;
     private String titular;
+
+
     public CuentaEntity setNumeroCuenta(String numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
         return this;
+    }
+
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public String getCbu() {
+        return cbu;
+    }
+
+    public String getTitular() {
+        return titular;
     }
 
     public CuentaEntity setTitular(String titular) {

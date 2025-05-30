@@ -1,3 +1,6 @@
+server:
+  port: 8083
+
 spring:
   datasource:
     url: jdbc:h2:mem:atmtransdb
@@ -11,7 +14,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
 
 management:
   endpoints:
@@ -28,7 +30,6 @@ resilience4j:
       transactionService:
         maxAttempts: 3
         waitDuration: 1s
-
   circuitbreaker:
     instances:
       transactionService:
